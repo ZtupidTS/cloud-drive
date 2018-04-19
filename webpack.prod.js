@@ -1,9 +1,10 @@
 const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: ['babel-polyfill', './src/index.jsx'],
   output: {
-    filename: 'bundle.js',
+    filename: '[chunkhash].js',
     path: path.resolve(__dirname, 'dist')
   },
   mode: 'production',
@@ -15,5 +16,9 @@ module.exports = {
     ]
   },
   plugins: [
+    new HtmlWebpackPlugin({
+       title: '云盘',
+       template: 'dist/index.html'
+    })
   ]
 };

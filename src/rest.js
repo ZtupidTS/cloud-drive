@@ -10,7 +10,7 @@ if (process.env.NODE_ENV == 'development') {
 
 const instance = axios.create({
   baseURL: baseURL,
-  timeout: 1000
+  timeout: 6000
 })
 
 console.log(process.env.NODE_ENV)
