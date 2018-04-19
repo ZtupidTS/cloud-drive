@@ -1,0 +1,16 @@
+.upload-container {
+  width: 25%;
+  display: flex;
+  justify-content: flex-start;
+
+  label,
+  button {
+    width: 42%;
+    height: 100%;
+  }
+
+  button {
+    margin-top: 0 !important;
+    margin-left: 20px;
+  }
+}

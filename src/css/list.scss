@@ -1,0 +1,22 @@
+.list-container {
+  width: 75%;
+  background-color: #ffffff;
+  padding: 15px;
+  display: block;
+  min-height: 500px;
+
+  table {
+    width: 100%;
+
+    th,
+    td {
+      text-align: left;
+      vertical-align: middle;
+
+      img {
+        margin-right: 7px;
+        margin-bottom: 2px;
+      }
+    }
+  }
+}

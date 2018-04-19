@@ -1,4 +1,6 @@
 import React from 'react'
+import rest from './rest'
+import './css/upload.scss'
 
 class Upload extends React.Component {
     constructor(props) {
@@ -8,31 +10,43 @@ class Upload extends React.Component {
 
     createDir = (e) => {
       e.preventDefault()
-      console.log('create', e)
     }
 
-    handleFile = (e) => {
+    backDir = (e) => {
+      let path = this.props.dirname.split('/')
+      let result = path.filter((value) => {
+        return value != ''
+      })
+
+      if (result.length == 0) {
+        return this.props.onUpload('/')
+      }
+
+      result.pop()
+
+      this.props.onUpload('/' + result.join('/'))
+    }
+
+    handleFile = async (e) => {
       e.preventDefault()
       if (this.fileInput.files.length === 0) {
         return console.log('no files')
       }
-      console.log('handle files', this.fileInput.files[0].name)
-      const xhr = new XMLHttpRequest()
-      xhr.open("POST", '/server', true)
+
       const form = new FormData()
       for (let file of this.fileInput.files) {
-        console.log('name', file.name)
-        form.append('files[]', file, file.name)
+        form.append(file.name, file, file.name)
       }
 
-      xhr.send(form)
+      await rest.post(`/upload?dirname=${this.props.dirname}`, form)
+      this.props.onUpload(this.props.dirname)
     }
-  
+
     render = () => {
       return (
-        <div>
+        <div className="upload-container">
           <input
-            id="file" 
+            id="file"
             style={{display: 'none'}}
             type="file"
             ref={(input) => this.fileInput = input}
@@ -41,10 +55,11 @@ class Upload extends React.Component {
           >{this.props.children}
           </input>
           <label className="btn btn-primary btn-block" htmlFor="file">上传</label>
-          <button className="btn btn-default btn-block" onClick={this.createDir}>新建文件夹</button>
+          {/*<button className="btn btn-default btn-block" onClick={this.createDir}>新建文件夹</button>*/}
+          {this.props.dirname != '/' && <button className="btn btn-default btn-block" onClick={this.backDir}>返回上一级</button>}
         </div>
       )
-    } 
+    }
   }
 
 export default Upload

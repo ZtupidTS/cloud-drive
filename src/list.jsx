@@ -1,53 +1,51 @@
-import 'react-table/react-table.css'
-
-import ReactTable, {ReactTableDefaults} from 'react-table'
-
 import React from 'react'
-
-Object.assign(ReactTableDefaults, {
-  defaultPageSize: 5,
-  minRows: 3
-})
-
-const columns = [{
-  Header: 'Name',
-  accessor: 'name' // String-based value accessors!
-}, {
-  Header: 'Age',
-  accessor: 'age',
-  Cell: props => <span className='number'>{props.value}</span> // Custom cell components!
-}, {
-  id: 'friendName', // Required because our accessor is not a string
-  Header: 'Friend Name',
-  accessor: d => d.friend.name // Custom value accessors!
-}, {
-  Header: props => <span>Friend Age</span>, // Custom header components!
-  accessor: 'friend.age'
-}]
+import rest from './rest'
+import Ctx from './ctr.jsx'
 
 class List extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      data: [{
-        name: 'Tanner Linsley',
-        age: 26,
-        friend: {
-          name: 'Jason Maurer',
-          age: 23,
-        }
-      }]
+      data: []
     }
   }
 
+  static getDerivedStateFromProps = (nextProps, prevState) => {
+    return {data: nextProps.data}
+  }
+
   render = () => {
+
+    const listItems = this.state.data.map((item, index) => {
+      return (
+        <Ctx
+          key={item.name}
+          item={item}
+          onDelete={this.props.onDelete}
+          onClickDir={this.props.onClickDir}
+        />
+      )
+    })
+
+    const black = <div>no data</div>
+
     return (
-      <ReactTable
-        data={this.state.data}
-        columns={columns}
-      />
+      <div>
+        <table className="table table-hover table-sm">
+          <thead>
+            <tr>
+              <th>文件名</th>
+              <th>大小</th>
+              <th>修改日期</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>{listItems}</tbody>
+        </table>
+        {listItems.length == 0 && <div style={{'marginTop': '190px'}}>暂无资料</div>}
+      </div>
     )
-  } 
+  }
 }
 
 export default List
