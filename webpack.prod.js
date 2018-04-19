@@ -1,5 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = {
   entry: ['babel-polyfill', './src/index.jsx'],
@@ -16,9 +17,10 @@ module.exports = {
     ]
   },
   plugins: [
+    new CleanWebpackPlugin(['dist'], {exclude:  ['svg/*.svg']}),
     new HtmlWebpackPlugin({
        title: '云盘',
-       template: 'dist/index.html'
+       template: 'template.html'
     })
   ]
 };

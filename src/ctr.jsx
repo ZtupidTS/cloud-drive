@@ -27,8 +27,9 @@ class Ctr extends React.Component {
 
   createQrCode = async (name, e) => {
     if (this.state.src == '') {
+      const requestName = this.props.item.dirname == '/' ? `/${name}` : `${this.props.item.dirname}/${name}`
       const src = await rest.post('/qrcode', {
-        name: `${this.props.item.dirname}/${name}`
+        name: requestName
       })
 
       this.setState({src: src.data})
